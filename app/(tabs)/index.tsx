@@ -1,70 +1,86 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { View,Text,Image, StyleSheet, Platform,ImageBackground,TextInput,TouchableOpacity } from 'react-native';
+import {width, height} from '../../constants/tamanho'
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <ImageBackground
+      source={require("../../assets/images/fundo.png")}
+      style={styles.fundo}
+      >
+      <Image
+      source={require("../../assets/images/imagem_1.2.png")}
+      style = {styles.imagem_login}
+      />
+      <TextInput style={styles.login_dados_nome} placeholder='Nome'/>
+      <TextInput style={styles.login_dados_email} placeholder='Email'/>
+      <TextInput style={styles.login_dados_email} placeholder='Confirmar email'/>
+      <TextInput style={styles.login_dados_senha} placeholder='Senha'/>
+      <TextInput style={styles.login_dados_senha} placeholder='Confirmar senha'/>
+      <TouchableOpacity/>
+
+   </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+ container:{
+  flex:1,
+  backgroundColor:"blue",
+  alignItems:"center",
+  
+ },
+ login_dados_nome:{
+marginTop:height*0.3,
+color:"white",
+width:width*0.8,
+borderRadius:width*0.1,
+borderWidth:width*0.003,
+borderColor:"white",
+height:height*0.05,
+opacity:0.7
+ },
+ login_dados_email:{
+  color:"white",
+  width:width*0.8,
+  borderRadius:width*0.1,
+  borderWidth:width*0.003,
+  borderColor:"white",
+  height:height*0.05,
+  opacity:0.7,
+  marginTop:height*0.02,
+ 
+   },
+   login_dados_senha:{
+    color:"white",
+    width:width*0.8,
+    borderRadius:width*0.1,
+    borderWidth:width*0.003,
+    borderColor:"white",
+    height:height*0.05,
+    opacity:0.7,
+  marginTop:height*0.02,
+
+     },
+
+ fundo:{
+  flex:1,
+  alignItems:"center",
+  height:height,
+  width:width,
+ },
+
+ imagem_login:{
+ position:"absolute",
+ top:0
+ },
+ texto:{
+  color:"white",
+  fontSize:40,
+  position:"absolute",
+  fontFamily:"Gotham",
+  opacity:0.7,
+  top:210
+ }
 });
