@@ -2,6 +2,8 @@ import { View, Text, Image, StyleSheet, ImageBackground, TextInput, TouchableOpa
 import { width, height } from '../constants/tamanho';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import {auth} from '../Services/firebaseConfig.js'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default function Cadastro() {
   const navigation = useNavigation();
@@ -13,28 +15,49 @@ export default function Cadastro() {
 
   const handleCadastro = () => {
     if (!nome || !email || !senha || !confirmarEmail || !confirmarSenha) {
-      alert("Preencha todos os campos");
+      alert("Erro", "Preencha todos os campos");
       return;
     }
   
+    // Validação de email
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(email)) {
+      alert("Erro", "Email inválido");
+      return;
+    }
+
     if (email !== confirmarEmail || senha !== confirmarSenha) {
-      alert("Os emails ou as senhas não coincidem!");
+      alert("Erro", "Os emails ou as senhas não coincidem!");
       return;
     }
   
-    setNome('');
-    setEmail('');
-    setSenha('');
-    setConfirmarEmail('');
-    setConfirmarSenha('');
-  
-   
-    navigation.navigate('Dashbord', {
-      nomeCadastro: nome,
-      emailCadastro: email,
-      senhaCadastro: senha,
+    
+    createUserWithEmailAndPassword(auth, email, senha)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      navigation.navigate('Dashbord');
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorMessage);
+      alert("usuário ja existe");
+      
+      // ..
     });
+
+     // Limpar campos após o cadastro
+     setNome('');
+     setEmail('');
+     setSenha('');
+     setConfirmarEmail('');
+     setConfirmarSenha('');
+
+  
   };
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -100,7 +123,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     alignItems: "center",
     justifyContent: "center",
-    margin: height * 0.01
+    margin: height * 0.01,
   },
   login_button_texto: {
     color: "white",
@@ -119,7 +142,7 @@ const styles = StyleSheet.create({
     borderWidth: width * 0.003,
     borderColor: "white",
     height: height * 0.05,
-    opacity: 0.7
+    opacity: 0.7,
   },
   login_dados_email: {
     color: "white",
@@ -149,6 +172,6 @@ const styles = StyleSheet.create({
   },
   imagem_login: {
     position: "absolute",
-    top: 0
+    top: 0,
   },
 });

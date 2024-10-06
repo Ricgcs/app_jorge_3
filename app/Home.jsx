@@ -1,7 +1,9 @@
 import { View, Text, Image, StyleSheet, ImageBackground, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { width, height } from '../constants/tamanho';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import { auth } from '../Services/firebaseConfig.js';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useState } from 'react';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -10,21 +12,27 @@ export default function Home() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginSenha, setLoginSenha] = useState('');
 
-  const handleLogin = () => {    
-    if (!loginNome || !loginEmail || !loginSenha) {  // Corrigido o !loginSenha
+  const handleLogin = () => {
+    if (!loginNome || !loginEmail || !loginSenha) {
       alert("Preencha todos os campos");
       return;
     }
-  
-    // Certifique-se de passar os parâmetros corretamente
-    navigation.navigate('Dashbord', { 
-      codigo: 0,  // Parâmetro de controle
-      nomeLogin: loginNome,
-      emailLogin: loginEmail,
-      senhaLogin: loginSenha,
-    });
+
+    signInWithEmailAndPassword(auth, loginEmail, loginSenha)
+      .then((userCredential) => {
+        // Usuário autenticado
+        const user = userCredential.user;
+        navigation.navigate('Dashbord');
+      })
+      .catch((error) => {
+        if (error.code === 'auth/user-not-found') {
+          alert("Usuário não existe");
+        } else {
+          alert("Credenciais erradas");
+        }
+      });
   };
-  
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -35,23 +43,23 @@ export default function Home() {
           source={require("../assets/images/imagem_1.2.png")}
           style={styles.imagem_login}
         />
-        <TextInput 
-          onChangeText={setLoginNome} 
-          style={styles.login_dados_nome} 
-          placeholder='Nome' 
+        <TextInput
+          onChangeText={setLoginNome}
+          style={styles.login_dados_nome}
+          placeholder='Nome'
           value={loginNome}
         />
-        <TextInput 
-          onChangeText={setLoginEmail} 
-          style={styles.login_dados_email} 
-          placeholder='Email' 
+        <TextInput
+          onChangeText={setLoginEmail}
+          style={styles.login_dados_email}
+          placeholder='Email'
           value={loginEmail}
         />
-        <TextInput 
-          onChangeText={setLoginSenha} 
-          style={styles.login_dados_senha} 
-          placeholder='Senha' 
-          secureTextEntry 
+        <TextInput
+          onChangeText={setLoginSenha}
+          style={styles.login_dados_senha}
+          placeholder='Senha'
+          secureTextEntry
           value={loginSenha}
         />
 
@@ -61,7 +69,7 @@ export default function Home() {
         >
           <Text style={styles.login_button_texto}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Cadastro")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
           <Text style={styles.login_button_texto}>Cadastre-se</Text>
         </TouchableOpacity>
       </ImageBackground>

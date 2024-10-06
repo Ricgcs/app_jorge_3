@@ -1,77 +1,12 @@
 import { View, Text, Image, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { width, height } from '../constants/tamanho';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';     
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const salvarUsuarios = async (usuarios) => {
-  try {
-    const jsonValue = JSON.stringify(usuarios);
-    await AsyncStorage.setItem('@usuarios', jsonValue);
-  } catch (e) {
-    console.error("Erro ao salvar usuários", e);
-  }
-};
 
-const carregarUsuarios = async () => {
-  try {
-    const jsonValue = await AsyncStorage.getItem('@usuarios');
-    return jsonValue != null ? JSON.parse(jsonValue) : [];
-  } catch (e) {
-    console.error("Erro ao carregar usuários", e);
-    return []; 
-  }
-};
-
-export default function Dashbord({ route, navigation }) {
-  const [usuarios, setUsuarios] = useState([]);
-
-  useEffect(() => {
-    const loadData = async () => {
-      const loadedUsuarios = await carregarUsuarios();
-      setUsuarios(loadedUsuarios);
-    };
-
-    loadData();
-  }, []);
-
+export default function Dashbord() {
   
-  if (!route || !route.params) {
-    alert("Parâmetros não foram passados corretamente.");
-    navigation.navigate("Home");
-    return null;  
-  }
-
-  const { codigo, nomeLogin, emailLogin, senhaLogin, nomeCadastro, emailCadastro, senhaCadastro } = route.params;
-
-  if (codigo === 0) {
-   
-    const usuario = usuarios.find(user =>
-      user.nome === nomeLogin && user.email === emailLogin && user.senha === senhaLogin
-    );
-
-    if (!usuario) {
-      alert("Usuário não encontrado");
-      navigation.navigate("Home");
-    }
-  } else {
-    // Lógica de cadastro
-    const usuarioExistente = usuarios.find(user =>
-      user.nome === nomeCadastro && user.email === emailCadastro && user.senha === senhaCadastro
-    );
-
-    if (usuarioExistente) {
-      alert("Usuário já existe");
-      navigation.navigate("Cadastro");
-      return; // Evitar adicionar o novo usuário se já existir
-    }
-
-    const novoUser = { nome: nomeCadastro, email: emailCadastro, senha: senhaCadastro };
-    const updatedUsuarios = [...usuarios, novoUser];
-    setUsuarios(updatedUsuarios);
-    salvarUsuarios(updatedUsuarios); // Salvar o novo usuário
-  }
-
   return (
     <View style={styles.container}>
       <ImageBackground
