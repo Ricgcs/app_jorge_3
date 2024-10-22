@@ -1,7 +1,4 @@
 
-Memory updated
-Claro! Aqui está o texto reescrito na primeira pessoa do singular:
-
 O Firebase é uma plataforma oferecida pelo Google que fornece uma série de ferramentas para o desenvolvimento de aplicativos, incluindo autenticação de usuários, armazenamento de dados em tempo real, hospedagem e muito mais.
 
 Conexão com Firebase
