@@ -1,50 +1,16 @@
-# Welcome to your Expo app 👋
+O Firebase é uma plataforma oferecida pelo Google que fornece uma série de ferramentas para desenvolvimento de aplicativos, incluindo autenticação de usuários, armazenamento de dados em tempo real, hospedagem e muito mais.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Conexão com Firebase
+No arquivo firebaseConfig.js que você forneceu, você configurou a conexão com o Firebase para sua aplicação:
 
-## Get started
+Inicialização do Firebase: O Firebase é inicializado com as configurações fornecidas no firebaseConfig, que inclui a chave de API, domínio de autenticação, ID do projeto, bucket de armazenamento, e outros detalhes do projeto Firebase​(firebaseConfig).
+Autenticação: O serviço de autenticação é ativado com o getAuth(), que você exporta como auth, permitindo que seja utilizado em outras partes da aplicação para gerenciar login, registro, etc.
+Conexão com as telas React (Ex: Home.jsx e Dashboard.jsx)
+Agora que o Firebase está configurado, você pode integrá-lo com suas telas no React, como Home.jsx e Dashboard.jsx, para realizar operações de autenticação. Aqui está um exemplo de como isso pode ser feito:
 
-1. Install dependencies
+Estrutura Geral do App
+Tela de Login (Home.jsx): Essa tela permite que os usuários façam login na aplicação utilizando Firebase Auth, onde os dados de login (email e senha) são verificados. Ao realizar o login, o usuário pode ser redirecionado para a próxima tela (por exemplo, o Dashboard), conforme o fluxo de navegação do React.
 
-   ```bash
-   npm install
-   ```
+Dashboard (Dashboard.jsx): Após o login, os dados do usuário autenticado podem ser acessados e exibidos no Dashboard.jsx. Aqui, você pode exibir informações relacionadas ao perfil do usuário, seus dados armazenados no Firebase ou até informações vindas do banco de dados MySQL. O Firebase Auth mantém a sessão do usuário ativa enquanto ele estiver autenticado.
 
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Cadastro (Cadstro.jsx): Apartir do reactNavigation hà uma transitividade de telas entre esta e a de login, para caso o usuario não esteja cadastrado ele possa criar uma conta vindo para esta página adicionando e depois logando para o dashboard.
